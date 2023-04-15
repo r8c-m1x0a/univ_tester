@@ -46,7 +46,7 @@ lst = env.Command(
     f"{PROGRAM}.lst", elf, f"m32c-elf-objdump -h -S {PROGRAM}.elf > {PROGRAM}.lst"
 )
 
-testEnv.Command(
+test = testEnv.Command(
     f"{PROGRAM}.log", testProg, f"./{PROGRAM} | tee {PROGRAM}.log"
 )
 testEnv.AlwaysBuild(test)
