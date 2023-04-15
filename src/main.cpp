@@ -107,15 +107,15 @@ static void print(int i) {
 void init_uart() {
   // UART の設定 (P1_4: TXD0[out], P1_5: RXD0[in])
   // ※シリアルライターでは、RXD 端子は、P1_6 となっているので注意！
-  io.pm1.set_b4_func(PM1_B4_FUNC::TXD0);
+  io.pm1.bits.b4_func = PM1_B4_FUNC::TXD0;
   io.pmh1e.bits.is_b4_trciob = false;
 
-  io.pm1.set_b5_func(PM1_B5_FUNC::RXD0);
+  io.pm1.bits.b5_func = PM1_B5_FUNC::RXD0;
   io.pmh1e.bits.is_b5_vcout1 = false;
 
   io.mstcr.bits.is_uart_standby = false;
 
-  io.u0c0.set_clk_div(U0C0_CLK::DIV1);
+  io.u0c0.bits.clk_div = U0C0_CLK::DIV1;
   io.u0brg = 10;
 
   io.u0mr.set(u0mr_t()
@@ -124,8 +124,8 @@ void init_uart() {
 
   io.u0c1.set(u0c1_t().with_tx_enabled(true).with_rx_enabled(true));
 
-  io.ilvl8.set_uart_tx(ITR_LEVEL::LEVEL_1);
-  io.ilvl9.set_uart_rx(ITR_LEVEL::LEVEL_1);
+  io.ilvl8.bits.uart_tx = ITR_LEVEL::LEVEL_1;
+  io.ilvl9.bits.uart_rx = ITR_LEVEL::LEVEL_1;
 
   io.u0ir.set(u0ir_t().with_rx_itr_enabled(true).with_tx_itr_enabled(true));
 
@@ -139,8 +139,8 @@ static void init_device() {
   // 高速オンチップオシレーターへ切り替え(20MHz)
   // ※ F_CLK を設定する事（Makefile内）
   io.ococr.bits.is_hosc_enabled = true;
-  io.sckcr.set_clk_src(SCKCR_HSCKSEL::ON_CHIP_CLK_SRC);
-  io.ckstpr.set_base_clk(CKSTPR_SCKSEL::HIGH_SPEED);
+  io.sckcr.bits.hscksel = SCKCR_HSCKSEL::ON_CHIP_CLK_SRC;
+  io.ckstpr.bits.base_clk = CKSTPR_SCKSEL::HIGH_SPEED;
 
   init_uart();
 }
@@ -148,7 +148,7 @@ static void init_device() {
 int main(int argc, char *argv[]) {
   init_device();
 
-  while(1) {
+  while (1) {
     for (int i = 0; i < 100000; ++i) {
       print(i);
       utils::delay::milli_second(500);

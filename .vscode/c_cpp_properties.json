@@ -3,7 +3,7 @@
         {
             "name": "Linux",
             "includePath": [
-                "${default}", "src", "io/src", "hirakuni/src"
+                "${default}", "src", "io/src", "r8c/src"
             ],
             "defines": [],
             "compilerPath": "/usr/bin/clang",
