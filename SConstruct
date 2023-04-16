@@ -6,6 +6,8 @@ PROGRAM='univ_tester'
 DEPENDENCIES=['io', 'r8c']
 
 DEP_SRC=[f"{d}/src" for d in DEPENDENCIES]
+BASE_DIR = Dir('.').srcnode().abspath
+
 baseEnv = Environment(
     ENV={'PATH' : os.environ['PATH']},
     AS='m32c-elf-as',
@@ -77,6 +79,11 @@ testEnv.Alias("test", coverage_html)
 
 env.Clean(lst, ["build"])
 testEnv.Clean(coverage_html, ["coverage"])
+
+docs = testEnv.Command(f"{BASE_DIR}/html/index.html", [], f"doxygen {BASE_DIR}/Doxyfile")
+testEnv.Clean(docs, "html")
+
+testEnv.Alias("docs", docs)
 
 os.environ['SKIP'] = "test docs"
 
