@@ -6,7 +6,7 @@ PROGRAM='univ_tester'
 DEPENDENCIES=['io', 'r8c']
 
 baseEnv = Environment(
-    ENV = {'PATH' : os.environ['PATH']},
+    ENV={'PATH' : os.environ['PATH']},
     AS='m32c-elf-as',
     CC='m32c-elf-gcc',
     CXX='m32c-elf-g++',
@@ -22,10 +22,10 @@ env = baseEnv.Clone(LIBS=['r8c', 'io'], LIBPATH=DEPENDENCIES)
 env.VariantDir('build', 'src', duplicate=0)
 
 testEnv = Environment(
-    ENV = {'PATH' : os.environ['PATH']},
+    ENV={'PATH' : os.environ['PATH']},
     LIBS=['pthread', 'libgtest', 'gcov'],
     CPPPATH=['src', 'io/src', 'r8c/src'],
-    CPPFLAGS='-coverage'
+    CPPFLAGS='-coverage',
 )
 testEnv.VariantDir('build', 'src', duplicate=0)
 
@@ -43,7 +43,7 @@ lst = env.Command(
     f"build/{PROGRAM}.lst", elf, f"m32c-elf-objdump -h -S build/{PROGRAM}.elf > build/{PROGRAM}.lst"
 )
 
-Depends(lst, mot)
+env.Depends(lst, mot)
 
 testProg = testEnv.Program(f"build/test/{PROGRAM}", Glob('build/test/*.cpp'))
 
@@ -66,14 +66,16 @@ coverage = testEnv.Command(
 coverage_html = testEnv.Command(
     "coverage",
     "build/test/coverage.info",
-    "rm -rf html && genhtml build/test/coverage.info -o coverage"
+    "genhtml build/test/coverage.info -o coverage"
 )
 Alias("test", [test, coverage_html])
 
 Clean(lst, ["build", "coverage"])
 
-r8c = SConscript('r8c/SConstruct')
-Depends(elf, r8c)
+os.environ['SKIP'] = "test docs"
 
-io = SConscript('io/SConstruct')
-Depends(elf, io)
+r8c = env.SConscript('r8c/SConstruct')
+env.Depends(elf, r8c)
+
+io = env.SConscript('io/SConstruct')
+env.Depends(elf, io)
