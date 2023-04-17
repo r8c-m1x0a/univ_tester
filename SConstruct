@@ -5,11 +5,11 @@ import os
 PROGRAM='univ_tester'
 DEPENDENCIES=['io', 'r8c']
 
-DEP_SRC=[f"{d}/src" for d in DEPENDENCIES]
+DEP_SRC=[f"{d}/src/main" for d in DEPENDENCIES]
 
 commonEnv = Environment(
     ENV={'PATH' : os.environ['PATH']},
-    CPPPATH=["src"] + DEP_SRC,
+    CPPPATH=["src/main"] + DEP_SRC,
 )
 
 baseEnv = commonEnv.Clone(
@@ -25,7 +25,7 @@ baseEnv = commonEnv.Clone(
     LIBPATH=DEPENDENCIES
 )
 env = baseEnv.Clone()
-env.VariantDir("build", "src", duplicate=0)
+env.VariantDir("build/main", "src/main", duplicate=0)
 
 testEnv = commonEnv.Clone(
     LIBS=['pthread', 'libgtest', 'gcov'],
@@ -35,7 +35,7 @@ testEnv.VariantDir("build/test", "src/test", duplicate=0)
 
 elf = env.Program(
     f"build/{PROGRAM}.elf", [
-        [Glob("build/*.cpp"), Glob("build/*.c")],
+        [Glob("build/main/*.cpp"), Glob("build/main/*.c"), Glob("build/main/*.cc")],
     ],
 )
 
@@ -52,7 +52,7 @@ env.Depends(lst, mot)
 env.Alias("compile", lst)
 Default(lst)
 
-testProg = testEnv.Program(f"build/test/{PROGRAM}", [Glob("build/test/*.cpp"), Glob("build/test/*.c")])
+testProg = testEnv.Program(f"build/test/{PROGRAM}", [Glob("build/test/*.cpp"), Glob("build/test/*.c"), Glob("build/test/*.cc")])
 
 TEST_ONLY = os.getenv('TEST_ONLY')
 test = testEnv.Command(
@@ -62,7 +62,7 @@ test = testEnv.Command(
 
 coverage = testEnv.Command(
     "build/test/coverage.info",
-    Glob("build/test/*.gcda"),
+    [Glob("build/test/*.gcda"), Glob("build/main/*.gcda")],
     "lcov -c -d build/test -o build/test/coverage.info"
 )
 testEnv.Depends(coverage, test)
