@@ -50,13 +50,13 @@ lst = env.Command(
 )
 env.Depends(lst, mot)
 
-env.Alias("build", lst)
+env.Alias("compile", lst)
 Default(lst)
 
 testProg = testEnv.Program(f"{BASE_DIR}/build/test/{PROGRAM}", Glob(f"{BASE_DIR}/build/test/*.cpp"))
 
 TEST_ONLY = os.getenv('TEST_ONLY')
-_test = testEnv.Command(
+test = testEnv.Command(
     f"{BASE_DIR}/build/test/{PROGRAM}.log", testProg,
     f"{BASE_DIR}/build/test/{PROGRAM} " + ("" if TEST_ONLY is None else f"--gtest_filter={TEST_ONLY}") + f" | tee {BASE_DIR}/build/{PROGRAM}.log"
 )
@@ -66,7 +66,7 @@ coverage = testEnv.Command(
     Glob(f"{BASE_DIR}/build/test/*.gcda"),
     f"lcov -c -d {BASE_DIR}/build/test -o {BASE_DIR}/build/test/coverage.info"
 )
-testEnv.Depends(coverage, _test)
+testEnv.Depends(coverage, test)
 
 coverage_html = testEnv.Command(
     f"{BASE_DIR}/coverage",
