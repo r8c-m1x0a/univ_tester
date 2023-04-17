@@ -2,7 +2,7 @@
 
 import os
 
-PROGRAM='univ_tester'
+NAME='univ_tester'
 DEPENDENCIES=['io', 'r8c']
 
 DEP_SRC=[f"{d}/src/main" for d in DEPENDENCIES]
@@ -21,7 +21,7 @@ baseEnv = commonEnv.Clone(
     CXXFLAGS='-std=c++17',
     CPPFLAGS='-Wall -Werror -Wno-unused-variable -fno-exceptions -Os -mcpu=r8c',
     LINK='m32c-elf-gcc',
-    LINKFLAGS=f"-mcpu=r8c -nostartfiles -Wl,-Map,build/main/{PROGRAM}.map -T r8c/m120an.ld -lsupc++",
+    LINKFLAGS=f"-mcpu=r8c -nostartfiles -Wl,-Map,build/main/{NAME}.map -T r8c/m120an.ld -lsupc++",
     LIBS=DEPENDENCIES,
     LIBPATH=DEP_LIB
 )
@@ -35,18 +35,18 @@ testEnv = commonEnv.Clone(
 testEnv.VariantDir("build/test", "src/test", duplicate=0)
 
 elf = env.Program(
-    f"build/main/{PROGRAM}.elf", [
+    f"build/main/{NAME}.elf", [
         [Glob("build/main/*.cpp"), Glob("build/main/*.c"), Glob("build/main/*.cc")],
     ],
 )
 
 mot = env.Command(
-    f"build/main/{PROGRAM}.mot", elf, f"m32c-elf-objcopy --srec-forceS3 --srec-len 32 -O srec build/main/{PROGRAM}.elf build/main/{PROGRAM}.mot"
+    f"build/main/{NAME}.mot", elf, f"m32c-elf-objcopy --srec-forceS3 --srec-len 32 -O srec build/main/{NAME}.elf build/main/{NAME}.mot"
 )
 env.Depends(mot, elf)
 
 lst = env.Command(
-    f"build/main/{PROGRAM}.lst", elf, f"m32c-elf-objdump -h -S build/main/{PROGRAM}.elf > build/main/{PROGRAM}.lst"
+    f"build/main/{NAME}.lst", elf, f"m32c-elf-objdump -h -S build/main/{NAME}.elf > build/main/{NAME}.lst"
 )
 env.Depends(lst, mot)
 
@@ -54,30 +54,23 @@ env.Alias("compile", [lst, mot])
 env.Clean("compile", ["build/main"])
 Default(lst)
 
-testProg = testEnv.Program(f"build/test/{PROGRAM}", [Glob("build/test/*.cpp"), Glob("build/test/*.c"), Glob("build/test/*.cc")])
+testProg = testEnv.Program(f"build/test/{NAME}", [Glob("build/test/*.cpp"), Glob("build/test/*.c"), Glob("build/test/*.cc")])
 
 TEST_ONLY = os.getenv('TEST_ONLY')
 test = testEnv.Command(
-    f"build/test/{PROGRAM}.log", testProg,
-    f"build/test/{PROGRAM} " + ("" if TEST_ONLY is None else f"--gtest_filter={TEST_ONLY}") + f" | tee build/{PROGRAM}.log"
+    f"build/test/{NAME}.log", testProg,
+    f"build/test/{NAME} " + ("" if TEST_ONLY is None else f"--gtest_filter={TEST_ONLY}") + f" | tee build/{NAME}.log"
 )
 
 coverage = testEnv.Command(
     "build/test/coverage.info",
     [Glob("build/test/*.gcda"), Glob("build/main/*.gcda")],
-    "lcov -c -d build/test -o build/test/coverage.info"
+    "lcov -c -d build/test -o build/test/coverage.info && genhtml build/test/coverage.info -o coverage"
 )
 testEnv.Depends(coverage, test)
 
-coverage_html = testEnv.Command(
-    "coverage",
-    "build/test/coverage.info",
-    "genhtml build/test/coverage.info -o coverage"
-)
-testEnv.Depends(coverage_html, coverage)
-
-testEnv.Alias("test", coverage_html)
-testEnv.Clean(coverage_html, ["coverage", "build/test"])
+testEnv.Alias("test", coverage)
+testEnv.Clean(coverage, ["coverage", "build/test"])
 
 docs = testEnv.Command("html/index.html", [], "doxygen Doxyfile")
 testEnv.Clean(docs, "html")
@@ -88,5 +81,5 @@ testEnv.Alias("docs", docs)
 os.environ['SKIP'] = "test docs"
 
 for dep in DEPENDENCIES:
-    l = baseEnv.SConscript(f"{dep}/SConstruct")
-    baseEnv.Depends(elf, l)
+    l = SConscript(f"{dep}/SConstruct")
+    Depends(elf, l)
