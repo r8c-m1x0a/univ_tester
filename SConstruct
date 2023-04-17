@@ -6,6 +6,7 @@ PROGRAM='univ_tester'
 DEPENDENCIES=['io', 'r8c']
 
 DEP_SRC=[f"{d}/src/main" for d in DEPENDENCIES]
+DEP_LIB=[f"{d}/build/main" for d in DEPENDENCIES]
 
 commonEnv = Environment(
     ENV={'PATH' : os.environ['PATH']},
@@ -20,9 +21,9 @@ baseEnv = commonEnv.Clone(
     CXXFLAGS='-std=c++17',
     CPPFLAGS='-Wall -Werror -Wno-unused-variable -fno-exceptions -Os -mcpu=r8c',
     LINK='m32c-elf-gcc',
-    LINKFLAGS=f"-mcpu=r8c -nostartfiles -Wl,-Map,build/{PROGRAM}.map -T r8c/m120an.ld -lsupc++",
+    LINKFLAGS=f"-mcpu=r8c -nostartfiles -Wl,-Map,build/main/{PROGRAM}.map -T r8c/m120an.ld -lsupc++",
     LIBS=DEPENDENCIES,
-    LIBPATH=DEPENDENCIES
+    LIBPATH=DEP_LIB
 )
 env = baseEnv.Clone()
 env.VariantDir("build/main", "src/main", duplicate=0)
@@ -34,22 +35,23 @@ testEnv = commonEnv.Clone(
 testEnv.VariantDir("build/test", "src/test", duplicate=0)
 
 elf = env.Program(
-    f"build/{PROGRAM}.elf", [
+    f"build/main/{PROGRAM}.elf", [
         [Glob("build/main/*.cpp"), Glob("build/main/*.c"), Glob("build/main/*.cc")],
     ],
 )
 
 mot = env.Command(
-    f"build/{PROGRAM}.mot", elf, f"m32c-elf-objcopy --srec-forceS3 --srec-len 32 -O srec build/{PROGRAM}.elf build/{PROGRAM}.mot"
+    f"build/main/{PROGRAM}.mot", elf, f"m32c-elf-objcopy --srec-forceS3 --srec-len 32 -O srec build/main/{PROGRAM}.elf build/main/{PROGRAM}.mot"
 )
 env.Depends(mot, elf)
 
 lst = env.Command(
-    f"build/{PROGRAM}.lst", elf, f"m32c-elf-objdump -h -S build/{PROGRAM}.elf > build/{PROGRAM}.lst"
+    f"build/main/{PROGRAM}.lst", elf, f"m32c-elf-objdump -h -S build/main/{PROGRAM}.elf > build/main/{PROGRAM}.lst"
 )
 env.Depends(lst, mot)
 
-env.Alias("compile", lst)
+env.Alias("compile", [lst, mot])
+env.Clean("compile", ["build/main"])
 Default(lst)
 
 testProg = testEnv.Program(f"build/test/{PROGRAM}", [Glob("build/test/*.cpp"), Glob("build/test/*.c"), Glob("build/test/*.cc")])
@@ -75,19 +77,16 @@ coverage_html = testEnv.Command(
 testEnv.Depends(coverage_html, coverage)
 
 testEnv.Alias("test", coverage_html)
-
-env.Clean(lst, ["build"])
-testEnv.Clean(coverage_html, ["coverage"])
+testEnv.Clean(coverage_html, ["coverage", "build/test"])
 
 docs = testEnv.Command("html/index.html", [], "doxygen Doxyfile")
 testEnv.Clean(docs, "html")
 
 testEnv.Alias("docs", docs)
 
+# Assume you do not want repeating libraries' test/docs tasks everytime you invoke your project's test/docs task.
 os.environ['SKIP'] = "test docs"
 
-io = baseEnv.SConscript("io/SConstruct")
-env.Depends(elf, io)
-
-r8c = baseEnv.SConscript("r8c/SConstruct")
-env.Depends(elf, r8c)
+for dep in DEPENDENCIES:
+    l = baseEnv.SConscript(f"{dep}/SConstruct")
+    baseEnv.Depends(elf, l)
