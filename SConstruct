@@ -35,7 +35,7 @@ testEnv.VariantDir("build/test", "src/test", duplicate=0)
 
 elf = env.Program(
     f"build/{PROGRAM}.elf", [
-        "build/main.cpp",
+        [Glob("build/*.cpp"), Glob("build/*.c")],
     ],
 )
 
@@ -52,7 +52,7 @@ env.Depends(lst, mot)
 env.Alias("compile", lst)
 Default(lst)
 
-testProg = testEnv.Program(f"build/test/{PROGRAM}", Glob("build/test/*.cpp"))
+testProg = testEnv.Program(f"build/test/{PROGRAM}", [Glob("build/test/*.cpp"), Glob("build/test/*.c")])
 
 TEST_ONLY = os.getenv('TEST_ONLY')
 test = testEnv.Command(
