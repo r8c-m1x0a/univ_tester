@@ -1,16 +1,22 @@
 # -*- python -*-
 
 import os
+import deps
 
 NAME='univ_tester'
-DEPENDENCIES=['io', 'r8c']
+DEPENDENCIES=[
+    { 'name': 'io', 'url': 'https://github.com/r8c-m1x0a/io.git'},
+    { 'name': 'r8c', 'url': 'https://github.com/r8c-m1x0a/r8c.git'},
+]
+deps.install(DEPENDENCIES)
 
-DEP_SRC=[f"deps/{d}/src/main" for d in DEPENDENCIES]
-DEP_LIB=[f"deps/{d}/build/main" for d in DEPENDENCIES]
+DEP_NAMES=[d['name'] for d in DEPENDENCIES]
+DEP_SRCS=[f"deps/{d}/src/main" for d in DEP_NAMES]
+DEP_LIBS=[f"deps/{d}/build/main" for d in DEP_NAMES]
 
 commonEnv = Environment(
     ENV={'PATH' : os.environ['PATH']},
-    CPPPATH=["src/main"] + DEP_SRC,
+    CPPPATH=["src/main"] + DEP_SRCS,
 )
 
 baseEnv = commonEnv.Clone(
@@ -22,9 +28,10 @@ baseEnv = commonEnv.Clone(
     CPPFLAGS='-Wall -Werror -Wno-unused-variable -fno-exceptions -Os -mcpu=r8c',
     LINK='m32c-elf-gcc',
     LINKFLAGS=f"-mcpu=r8c -nostartfiles -Wl,-Map,build/main/{NAME}.map -T deps/r8c/m120an.ld -lsupc++",
-    LIBS=DEPENDENCIES,
-    LIBPATH=DEP_LIB
+    LIBS=DEP_NAMES,
+    LIBPATH=DEP_LIBS
 )
+
 env = baseEnv.Clone()
 env.VariantDir("build/main", "src/main", duplicate=0)
 
@@ -80,6 +87,6 @@ testEnv.Alias("docs", docs)
 # Assume you do not want repeating libraries' test/docs tasks everytime you invoke your project's test/docs task.
 os.environ['SKIP'] = "test docs"
 
-for dep in DEPENDENCIES:
+for dep in DEP_NAMES:
     l = SConscript(f"deps/{dep}/SConstruct")
     Depends(elf, l)
