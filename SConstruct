@@ -5,8 +5,8 @@ import os
 NAME='univ_tester'
 DEPENDENCIES=['io', 'r8c']
 
-DEP_SRC=[f"{d}/src/main" for d in DEPENDENCIES]
-DEP_LIB=[f"{d}/build/main" for d in DEPENDENCIES]
+DEP_SRC=[f"deps/{d}/src/main" for d in DEPENDENCIES]
+DEP_LIB=[f"deps/{d}/build/main" for d in DEPENDENCIES]
 
 commonEnv = Environment(
     ENV={'PATH' : os.environ['PATH']},
@@ -21,7 +21,7 @@ baseEnv = commonEnv.Clone(
     CXXFLAGS='-std=c++17',
     CPPFLAGS='-Wall -Werror -Wno-unused-variable -fno-exceptions -Os -mcpu=r8c',
     LINK='m32c-elf-gcc',
-    LINKFLAGS=f"-mcpu=r8c -nostartfiles -Wl,-Map,build/main/{NAME}.map -T r8c/m120an.ld -lsupc++",
+    LINKFLAGS=f"-mcpu=r8c -nostartfiles -Wl,-Map,build/main/{NAME}.map -T deps/r8c/m120an.ld -lsupc++",
     LIBS=DEPENDENCIES,
     LIBPATH=DEP_LIB
 )
@@ -50,7 +50,7 @@ lst = env.Command(
 )
 env.Depends(lst, mot)
 
-env.Alias("compile", [lst, mot])
+env.Alias("compile", lst)
 env.Clean("compile", ["build/main"])
 Default(lst)
 
@@ -65,15 +65,15 @@ test = testEnv.Command(
 coverage = testEnv.Command(
     "build/test/coverage.info",
     [Glob("build/test/*.gcda"), Glob("build/main/*.gcda")],
-    "lcov -c -d build/test -o build/test/coverage.info && genhtml build/test/coverage.info -o coverage"
+    "lcov -c -d build/test -o build/test/coverage.info && genhtml build/test/coverage.info -o build/test/coverage"
 )
 testEnv.Depends(coverage, test)
 
 testEnv.Alias("test", coverage)
-testEnv.Clean(coverage, ["coverage", "build/test"])
+testEnv.Clean(coverage, ["build/test"])
 
-docs = testEnv.Command("html/index.html", [], "doxygen Doxyfile")
-testEnv.Clean(docs, "html")
+docs = testEnv.Command("build/main/api/index.html", [], "doxygen Doxyfile")
+testEnv.Clean(docs, "build/main/api")
 
 testEnv.Alias("docs", docs)
 
@@ -81,5 +81,5 @@ testEnv.Alias("docs", docs)
 os.environ['SKIP'] = "test docs"
 
 for dep in DEPENDENCIES:
-    l = SConscript(f"{dep}/SConstruct")
+    l = SConscript(f"deps/{dep}/SConstruct")
     Depends(elf, l)

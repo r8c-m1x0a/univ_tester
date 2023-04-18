@@ -1,9 +1,5 @@
-io
-r8c
+deps
 .sconsign.dblite
-univ_tester.*
 build
-univ_tester
 *~
-coverage
-html
+#*
