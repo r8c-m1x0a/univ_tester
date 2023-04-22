@@ -1,7 +1,6 @@
 #include <cstdio>
 
 #include "fifo.hpp"
-#include "delay.hpp"
 #include "common/vect.h"
 #include "r8c-m1xa-io.h"
 #include "clock.h"
