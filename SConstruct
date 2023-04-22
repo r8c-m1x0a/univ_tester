@@ -26,7 +26,7 @@ baseEnv = commonEnv.Clone(
     CFLAGS='-std=c99',
     CXXFLAGS='-std=c++17',
     CPPFLAGS='-Wall -Werror -Wno-unused-variable -fno-exceptions -Os -mcpu=r8c',
-    LINK='m32c-elf-gcc',
+    LINK='m32c-elf-g++',
     LINKFLAGS=f"-mcpu=r8c -nostartfiles -Wl,-Map,build/main/{NAME}.map -T deps/r8c/m120an.ld -lsupc++",
     LIBS=DEP_NAMES,
     LIBPATH=DEP_LIBS

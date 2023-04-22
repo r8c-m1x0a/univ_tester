@@ -1,23 +1,12 @@
-//=====================================================================//
-/*!	@file
-	@brief	R8C UART サンプル @n
-			・８ビット１ストップ・ビット
-			P1_0: LED1 @n
-			P1_1: LED2 @n
-			P1_4: TXD(output) @n
-			P1_5: RXD(input)
-    @author 平松邦仁 (hira@rvf-rc45.net)
-	@copyright	Copyright (C) 2017, 2021 Kunihito Hiramatsu @n
-				Released under the MIT license @n
-				https://github.com/hirakuni45/R8C/blob/master/LICENSE
-*/
-//=====================================================================//
 #include <cstdio>
 
 #include "fifo.hpp"
 #include "delay.hpp"
 #include "common/vect.h"
 #include "r8c-m1xa-io.h"
+#include "clock.h"
+
+Clock<InternalClock20M> clock;
 
 typedef utils::fifo<uint8_t, 16> TX_BUFF;  // 送信バッファ
 typedef utils::fifo<uint8_t, 16> RX_BUFF;  // 受信バッファ
@@ -58,13 +47,11 @@ extern "C" {
   }
 };
 
-static void sleep() {
-  asm("nop");
-}
-
 static void resume_tx() {
   if (send_stall && send_buf.length() > 0) {
-    while (! io.u0c1.bits.is_tx_buf_empty) sleep();
+    while (! io.u0c1.bits.is_tx_buf_empty) {
+      asm("nop");
+    }
     uint8_t c = send_buf.get();
     send_stall = false;
     io.u0tbl = c;
@@ -75,7 +62,7 @@ void uart_putc(uint8_t c) {
   if(send_buf.length() >= (send_buf.size() * 7 / 8)) {
     resume_tx();
     while(send_buf.length() != 0) {
-      sleep();
+      asm("nop");
     }
   }
   send_buf.put(c);
@@ -133,15 +120,7 @@ void init_uart() {
 }
 
 static void init_device() {
-  // クロック関係レジスタ・プロテクト解除
-  io.prcr.bits.p0_enabled = true;
-
-  // 高速オンチップオシレーターへ切り替え(20MHz)
-  // ※ F_CLK を設定する事（Makefile内）
-  io.ococr.bits.is_hosc_enabled = true;
-  io.sckcr.bits.hscksel = SCKCR_HSCKSEL::ON_CHIP_CLK_SRC;
-  io.ckstpr.bits.base_clk = CKSTPR_SCKSEL::HIGH_SPEED;
-
+  clock.init(&io);
   init_uart();
 }
 
@@ -151,7 +130,7 @@ int main(int argc, char *argv[]) {
   while (1) {
     for (int i = 0; i < 100000; ++i) {
       print(i);
-      utils::delay::milli_second(500);
+      clock.busy_wait_ms(500);
     }
   }
 }
