@@ -1,0 +1,12 @@
+{
+    "context": "..",
+    "dockerFile": "Dockerfile",
+    "mounts": [
+        "source=univ-tester-mkdocs,target=/workspace,type=volume"
+    ],
+    "workspaceFolder": "/workspace",
+    "forwardPorts": [8765],
+    "extensions": [
+        "eightHundreds.vscode-drawio"
+    ]
+}
