@@ -1,1 +1,6 @@
-site_name: My Docs
+site_name: 万能導通テスタ
+language: ja
+theme:
+  name: material
+  palette:
+    scheme: slate

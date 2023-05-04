@@ -90,4 +90,4 @@ DC/DCコンバータにはEN端子があって、これが0なら出力がoffに
 
 ## 全体コード
 
-コードは![こちら](https://github.com/r8c-m1x0a/univ_tester)
+コードは[こちら](https://github.com/r8c-m1x0a/univ_tester)
