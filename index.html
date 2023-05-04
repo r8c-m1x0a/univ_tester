@@ -1,0 +1,527 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+      
+      
+      
+      
+      <link rel="icon" href="assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.4.2, mkdocs-material-9.0.2">
+    
+    
+      
+        <title>万能導通テスタ</title>
+      
+    
+    
+      <link rel="stylesheet" href="assets/stylesheets/main.f56500e0.min.css">
+      
+        
+        <link rel="stylesheet" href="assets/stylesheets/palette.2505c338.min.css">
+      
+      
+
+    
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+    <script>__md_scope=new URL(".",location),__md_hash=e=>[...e].reduce((e,_)=>(e<<5)-e+_.charCodeAt(0),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="slate" data-md-color-primary="" data-md-color-accent="">
+  
+    
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#_1" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+<header class="md-header" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="." title="万能導通テスタ" class="md-header__button md-logo" aria-label="万能導通テスタ" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3V6m0 5h18v2H3v-2m0 5h18v2H3v-2Z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            万能導通テスタ
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              万能導通テスタ
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.516 6.516 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5Z"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11h12Z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12 19 6.41Z"/></svg>
+        </button>
+      </nav>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="." title="万能導通テスタ" class="md-nav__button md-logo" aria-label="万能導通テスタ" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54Z"/></svg>
+
+    </a>
+    万能導通テスタ
+  </label>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+      
+
+  
+  
+    
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" data-md-toggle="toc" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          万能導通テスタ
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="." class="md-nav__link md-nav__link--active">
+        万能導通テスタ
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    一般的なテスタの導通テスタ機能
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    今回製作した導通テスタ
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    機能
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_5" class="md-nav__link">
+    マイクロコントローラ
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_6" class="md-nav__link">
+    開発環境
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_7" class="md-nav__link">
+    ダイオードの自動測定
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_8" class="md-nav__link">
+    テスタ棒
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_9" class="md-nav__link">
+    電源
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_10" class="md-nav__link">
+    オートパワーオフ
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_11" class="md-nav__link">
+    全体回路図
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_12" class="md-nav__link">
+    全体コード
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#_2" class="md-nav__link">
+    一般的なテスタの導通テスタ機能
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_3" class="md-nav__link">
+    今回製作した導通テスタ
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_4" class="md-nav__link">
+    機能
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_5" class="md-nav__link">
+    マイクロコントローラ
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_6" class="md-nav__link">
+    開発環境
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_7" class="md-nav__link">
+    ダイオードの自動測定
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_8" class="md-nav__link">
+    テスタ棒
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_9" class="md-nav__link">
+    電源
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_10" class="md-nav__link">
+    オートパワーオフ
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_11" class="md-nav__link">
+    全体回路図
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#_12" class="md-nav__link">
+    全体コード
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+
+<h1 id="_1">万能導通テスタ</h1>
+<p>回路製作では良く導通テスタを使用する。市販のテスタにも導通テスタ機能が付いているものが多い。これは導通していればブザが鳴るものがほとんどだ。しかし少々使い辛いので自分で作ることにした。</p>
+<h2 id="_2">一般的なテスタの導通テスタ機能</h2>
+<p>一般的なテスタに用意されている導通テスタ機能で不便な点は以下の動画にまとめた。</p>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/wsYs5_lycps" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+
+<p>デジタルテスタには微妙なタイムラグがある。おそらく今もアナログテスタに拘っている人達の理由の1つは、このタイムラグかもしれない。1-2回の測定ならともかく、何度も測定する場合はこのタイムラグが微妙にストレスになってくる。</p>
+<p>導通テスタは、ある程度の抵抗があると反応しない。もちろん「導通」の試験なのだからこれ自体は正しい。しかしテスタ棒の接触不良のせいなのか、実際に導通していないのかが判別できない。さきほどのタイムラグと相俟ってこれもストレスとなる。</p>
+<p>そしてダイオード、LEDのテスト。通常は導通テストとは別にダイオードテストのモードがあり、そこに切り替えないといけない。そして極性は自分で合わせないといけないので、自分でテスタ棒を入れ替えて調べる必要があり面倒だ。</p>
+<h2 id="_3">今回製作した導通テスタ</h2>
+<p>今回製作した導通テスタの動作も動画にした。</p>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/jaog9l4Jh-w" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
+
+<p>電源onはボタンを押すだけですぐに起動。導通テストのタイムラグは数10ms程度で、すぐに反応する。導通していれば音に加えてテスタ棒が光ることで分かる。抵抗がある場合は音程が変わるので完全導通じゃない場合も分かるし、ちょっとしたテスタ棒の接触不良でも音がすぐに鳴って分かる。LED、ダイオードの場合は自動的に極性を検出してアノード側のテスタ棒のみが光るので、テスタ棒を自分で入れ替えたりしなくて良い。</p>
+<h2 id="_4">機能</h2>
+<p>欲しかった機能はざっとこんな感じ。</p>
+<ul>
+<li>すぐに起動すること</li>
+<li>測定のタイムラグが小さいこと</li>
+<li>抵抗値によってブザの音程が変わること</li>
+<li>ダイオードを一発でテストできること</li>
+<li>LEDの場合は点灯すること(透明なタイプのLEDで発光色を確認したい時があるので)</li>
+<li>オートパワーオフ</li>
+<li>電池駆動(できればニッケル水素電池2本くらいで稼働して欲しい)</li>
+</ul>
+<h2 id="_5">マイクロコントローラ</h2>
+<p>機能的に必要なのは、</p>
+<ul>
+<li>I/O(LEDの制御など)</li>
+<li>AD変換(抵抗値によって音程を変えたいので)</li>
+<li>PWM(ブザ)</li>
+<li>UART(デバッグ用にあると助かる。無くても良い)</li>
+<li>5V駆動(LEDを点灯させるにはI/Oが4Vくらい出力できないと難しい)</li>
+</ul>
+<p>くらいでパフォーマンスは不要。PIC16Fあたりで十分と思われる。ところが昨今の半導体不足の影響か結構値段が上がっており、むしろPIC24やPIC32の方が安かったりする。ただこちらは電源が3.3Vになってしまうので条件を満たさなくなってしまう。PIC以外を物色していたら良いものが見つかった。<a href="https://akizukidenshi.com/catalog/g/gI-04524/">R8C(M110AN)</a>である。廃品種なので仕事で使うのは無理だが趣味で使うなら問題無し。10個入りで500円だ。ピン数が多い<a href="https://akizukidenshi.com/catalog/g/gI-04525/">R8C(M120AN)</a>もあり、ソフトウェア的にはコンパチでI/Oが多いだけなので扱い易い。この値段で16bitコアだし高速クロック発振器も内蔵されていて外付け回路不要だ。電源範囲も広いし20MHz動作でも数mAしか消費しないので扱い易い。目立った欠点はI<sup>2</sup>Cに対応していないことくらいか。また隠しRAM/ROMがあるようで、実際にはRAMは1366バイト(公称値256バイト)、ROMは64Kバイト(公称値2Kバイト)利用可能のようだ。</p>
+<h2 id="_6">開発環境</h2>
+<p>廃品種となると開発環境が不安だが、<a href="https://github.com/hirakuni45/R8C">hirakuni45さんのGitHub Page</a>に素晴しい内容が公開されている。ただ少々GCCが古く、C++のenum classをビットフィールドに使えないバグがあって辛かったため、GCC 12をdocker環境に<a href="https://github.com/r8c-m1x0a/docker-devenv">移植してみた</a>。</p>
+<p>GCC 12環境用に以下のものを用意。</p>
+<ul>
+<li><a href="https://github.com/r8c-m1x0a/r8c">R8Cのスタートアップファイルなど</a></li>
+<li><a href="https://github.com/r8c-m1x0a/io">I/Oアクセス用ライブラリ</a></li>
+</ul>
+<p>プログラマは、上記のhirakuni45さんのページにあるものを使用。.motというファイルがビルドできれば良い。書き込み方法もhirakuni45さんのページに記載されている。</p>
+<p>R8Cは消費電力が小さいので、USB serialに付いている5Vで十分駆動できた。</p>
+<h2 id="_7">ダイオードの自動測定</h2>
+<p>ダイオードの自動測定には定期的にテスタ棒にかける電圧の正負を反転してやって、その時に流れる電流が片方にしか流れていないかを調べれば良い。すぐ思い付くのはマイコンのI/O端子2つを使って、その2つを5V/0V、0V/5Vに切り替えるという方法。今回は若干オーバースペックなのだけど、<a href="https://akizukidenshi.com/catalog/g/gK-11338/">MOS-FETのブリッジ</a>を使用した。</p>
+<p><img alt="MOS-FETによるブリッジ" src="bridge.png" /></p>
+<p>PIN10と電源の間に抵抗を入れて、ここの電位をA/D変換で測定する。何も測定していない時は電流0なので、ほぼ5Vとなり、何か接続していれば流れている電流に応じた電圧効果分電位が下がる。2PIN, 6PINを1にして、4PIN, 8PINを0にした状態、逆に2PIN, 6PINを0にして、4PIN, 8PINを1にした状態、これを繰り返すことで出力を反転できる。もしも片方でしか電流が流れなければダイオードということになる。</p>
+<h2 id="_8">テスタ棒</h2>
+<p>今回、一番面倒だったのはテスタ棒だった。LEDを中に入れなければならないので、<a href="https://akizukidenshi.com/catalog/g/gI-11579/">3mm径のLED</a>を使用した。これは無極性なので配線の時に気を使わなくて良い。</p>
+<h2 id="_9">電源</h2>
+<p>電源は電池にしたい。経済的な単三x2のニッケル水素電池で済ますとすると、2.4Vくらい。これだとそのままではLEDを点灯させるのは難しい。といって3本用意するというのも面倒なので、昇圧することにした。今は<a href="https://akizukidenshi.com/catalog/g/gK-13065/">便利なDC/DCコンバータ</a>があり、0.9V-5Vの入力から簡単に5Vを生成できるので、今回のようなケースにぴったりだ。</p>
+<h2 id="_10">オートパワーオフ</h2>
+<p>この手の機器はやはりオートパワーオフが欲しい。</p>
+<p><img alt="オートパワーオフ" src="autopoweroff.png" /></p>
+<p>DC/DCコンバータにはEN端子があって、これが0なら出力がoffになる。これを利用してオートパワーオフを実装した。EN端子はDC/DCコンバータのモジュール内でプルアップされているので、それは外して逆にプルダウンする。これによって放っておけば電源はoffになる。電源スイッチを押すとENの電位が上がって電源が入る。マイコンのI/OポートもENに接続しておき、電源入ったと同時に1を出力することで電源スイッチを離しても電源が入ったままになる。一定時間経過したらマイコンのI/Oポートに0出力すれば電源を切ることができる。ついでに電源LEDも接続して一石二鳥。
+手動での電源offはできず、オートパワーオフ任せだが、測定してみても消費電流は数mAなので気にしないことにした。</p>
+<h2 id="_11">全体回路図</h2>
+<p><img alt="全体回路図" src="schematics.png" /></p>
+<h2 id="_12">全体コード</h2>
+<p>コードは<a href="https://github.com/r8c-m1x0a/univ_tester">こちら</a></p>
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+        </div>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    <script id="__config" type="application/json">{"base": ".", "features": [], "search": "assets/javascripts/workers/search.12658920.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    
+      <script src="assets/javascripts/bundle.5cf534bf.min.js"></script>
+      
+    
+  </body>
+</html>
