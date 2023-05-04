@@ -1,55 +1,95 @@
 # -*- python -*-
 
 import os
+import deps
 
-PROGRAM='uart_sample'
+NAME='univ_tester'
+DEPENDENCIES=[
+    { 'name': 'io', 'url': 'https://github.com/r8c-m1x0a/io.git'},
+    { 'name': 'r8c', 'url': 'https://github.com/r8c-m1x0a/r8c.git'},
+]
+deps.install(DEPENDENCIES)
 
-VariantDir('build', ['src'], duplicate=0)
+DEP_NAMES=[d['name'] for d in DEPENDENCIES]
+DEP_SRCS=[f"deps/{d}/src/main" for d in DEP_NAMES]
+DEP_LIBS=[f"deps/{d}/build/main" for d in DEP_NAMES]
 
-env = Environment(
-    ENV = {'PATH' : os.environ['PATH']},
+commonEnv = Environment(
+    ENV={'PATH' : os.environ['PATH']},
+    CPPPATH=["src/main"] + DEP_SRCS,
+)
+
+baseEnv = commonEnv.Clone(
     AS='m32c-elf-as',
     CC='m32c-elf-gcc',
     CXX='m32c-elf-g++',
-    CFLAGS='-std=gnu99',
-    CXXFLAGS='-std=c++14',
+    CFLAGS='-std=c99',
+    CXXFLAGS='-std=c++17',
     CPPFLAGS='-Wall -Werror -Wno-unused-variable -fno-exceptions -Os -mcpu=r8c',
-    CPPPATH=['.', 'src'],
-    LINK='m32c-elf-gcc',
-    LINKFLAGS=f"-mcpu=r8c -nostartfiles -Wl,-Map,{PROGRAM}.map -T src/M120AN/m120an.ld -lsupc++",
+    LINK='m32c-elf-g++',
+    LINKFLAGS=f"-mcpu=r8c -nostartfiles -Wl,-Map,build/main/{NAME}.map -T deps/r8c/m120an.ld -lsupc++",
+    LIBS=DEP_NAMES,
+    LIBPATH=DEP_LIBS
 )
 
-testEnv = Environment(
-    ENV = {'PATH' : os.environ['PATH']},
-    LIBS=['pthread', 'libgtest'],
+env = baseEnv.Clone()
+env.VariantDir("build/main", "src/main", duplicate=0)
+
+testEnv = commonEnv.Clone(
+    LIBS=['pthread', 'libgtest', 'gcov'],
+    CPPFLAGS='-coverage',
 )
+testEnv.VariantDir("build/test", ["src/test", "src/main"], duplicate=0)
 
 elf = env.Program(
-    f"{PROGRAM}.elf", [
-        'build/main.cpp',
-        'build/common/vect.c',
-        'build/common/init.c',
-        'build/common/start.s',
-    ],
-)
-testProg = testEnv.Program(
-    PROGRAM, [
-        'build/test/main_test.cpp',
-    ]
+    f"build/main/{NAME}.elf",
+    [Glob("build/main/*.cpp"), Glob("build/main/*.c"), Glob("build/main/*.cc")],
 )
 
 mot = env.Command(
-    f"{PROGRAM}.mot", elf, f"m32c-elf-objcopy --srec-forceS3 --srec-len 32 -O srec {PROGRAM}.elf {PROGRAM}.mot"
+    f"build/main/{NAME}.mot", elf, f"m32c-elf-objcopy --srec-forceS3 --srec-len 32 -O srec build/main/{NAME}.elf build/main/{NAME}.mot"
 )
+env.Depends(mot, elf)
 
 lst = env.Command(
-    f"{PROGRAM}.lst", elf, f"m32c-elf-objdump -h -S {PROGRAM}.elf > {PROGRAM}.lst"
+    f"build/main/{NAME}.lst", elf, f"m32c-elf-objdump -h -S build/main/{NAME}.elf > build/main/{NAME}.lst"
 )
+env.Depends(lst, mot)
 
+env.Alias("compile", lst)
+env.Clean("compile", ["build/main"])
+Default(lst)
+
+testProg = testEnv.Program(f"build/test/{NAME}", [
+#  testEnv.Object('buzz-test', "build/main/buzz.cpp"), Glob("build/test/*.cpp"), Glob("build/test/*.c"), Glob("build/test/*.cc")
+  Glob("build/test/*.cpp"), Glob("build/test/*.c"), Glob("build/test/*.cc")
+])
+
+TEST_ONLY = os.getenv('TEST_ONLY')
 test = testEnv.Command(
-    f"{PROGRAM}.log", testProg, f"./{PROGRAM} | tee {PROGRAM}.log"
+    f"build/test/{NAME}.log", testProg,
+    f"build/test/{NAME} " + ("" if TEST_ONLY is None else f"--gtest_filter={TEST_ONLY}") + f" | tee build/{NAME}.log"
 )
-testEnv.AlwaysBuild(test)
-Alias("test", f"{PROGRAM}.log")
 
-Default([mot, lst])
+coverage = testEnv.Command(
+    "build/test/coverage.info",
+    [Glob("build/test/*.gcda"), Glob("build/main/*.gcda")],
+    "lcov -c -d build/test -o build/test/coverage.info && genhtml build/test/coverage.info -o build/test/coverage"
+)
+testEnv.Depends(coverage, test)
+
+testEnv.Alias("test", coverage)
+testEnv.Clean(coverage, ["build/test"])
+
+docs = testEnv.Command("build/main/api/index.html", [], "doxygen Doxyfile")
+testEnv.Clean(docs, "build/main/api")
+
+testEnv.Alias("docs", docs)
+
+# Assume you do not want repeating libraries' test/docs tasks everytime you invoke your project's test/docs task.
+os.environ['SKIP'] = "test docs"
+
+for dep in DEP_NAMES:
+    l = SConscript(f"deps/{dep}/SConstruct")
+    Depends(elf, l)
+

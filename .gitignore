@@ -1,9 +1,5 @@
-*~
-build
+deps
 .sconsign.dblite
-uart_sample
-uart_sample.elf
-uart_sample.log
-uart_sample.map
-uart_sample.mot
-uart_sample.lst
+build
+*~
+#*
