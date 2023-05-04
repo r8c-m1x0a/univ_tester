@@ -39,12 +39,11 @@ testEnv = commonEnv.Clone(
     LIBS=['pthread', 'libgtest', 'gcov'],
     CPPFLAGS='-coverage',
 )
-testEnv.VariantDir("build/test", "src/test", duplicate=0)
+testEnv.VariantDir("build/test", ["src/test", "src/main"], duplicate=0)
 
 elf = env.Program(
-    f"build/main/{NAME}.elf", [
-        [Glob("build/main/*.cpp"), Glob("build/main/*.c"), Glob("build/main/*.cc")],
-    ],
+    f"build/main/{NAME}.elf",
+    [Glob("build/main/*.cpp"), Glob("build/main/*.c"), Glob("build/main/*.cc")],
 )
 
 mot = env.Command(
@@ -61,7 +60,10 @@ env.Alias("compile", lst)
 env.Clean("compile", ["build/main"])
 Default(lst)
 
-testProg = testEnv.Program(f"build/test/{NAME}", [Glob("build/test/*.cpp"), Glob("build/test/*.c"), Glob("build/test/*.cc")])
+testProg = testEnv.Program(f"build/test/{NAME}", [
+#  testEnv.Object('buzz-test', "build/main/buzz.cpp"), Glob("build/test/*.cpp"), Glob("build/test/*.c"), Glob("build/test/*.cc")
+  Glob("build/test/*.cpp"), Glob("build/test/*.c"), Glob("build/test/*.cc")
+])
 
 TEST_ONLY = os.getenv('TEST_ONLY')
 test = testEnv.Command(

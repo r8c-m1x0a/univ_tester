@@ -1,13 +1,10 @@
 #include <gtest/gtest.h>
+#include "buzz.h"
 
-int add(int x, int y) {
-    return x + y;
-}
-
-TEST(AddTest, Add1) {
-    EXPECT_EQ(1, add(1, 0));
-    EXPECT_EQ(1, add(0, 1));
-    EXPECT_EQ(2, add(1, 1));
+TEST(ToCountTest, ToCount) {
+    EXPECT_EQ(uint32_t(10000), to_count(0));
+    EXPECT_EQ(uint32_t(12476), to_count(100));
+    EXPECT_EQ(uint32_t(1333333), to_count(500));
 }
 
 int main(int argc, char* argv[]) {
